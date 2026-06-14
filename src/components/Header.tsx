@@ -16,17 +16,32 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white px-4">
-      <nav className="max-w-7xl mx-auto flex items-center justify-between py-3">
-        <Link to="/" className="text-xl font-bold text-gray-900 no-underline">
-          Savings App
+    <header role="banner" className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--header-bg)] backdrop-blur-xl px-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+      <nav className="max-w-7xl mx-auto flex items-center justify-between py-3.5">
+        <Link to="/" className="text-xl font-bold tracking-tight text-[var(--sea-ink)] hover:opacity-80 transition no-underline whitespace-nowrap flex-shrink-0">
+           Savings App
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
           <ThemeToggle />
           {user?.userId ? (
-            <button onClick={handleLogout} className="text-sm font-semibold text-gray-600">Logout</button>
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <span className="hidden sm:inline-flex text-sm font-medium text-[var(--sea-ink-soft)] px-3.5 py-1.5 rounded-full bg-[var(--chip-bg)] border border-[var(--chip-line)] max-w-[120px] md:max-w-[280px] truncate" title={user.email}>
+                {user.email}
+              </span>
+              <button 
+                onClick={handleLogout} 
+                className="glass-btn glass-btn-secondary px-3.5 py-1.5 text-sm whitespace-nowrap flex-shrink-0"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
-            <Link to="/auth" className="text-sm font-semibold text-gray-900">Login</Link>
+            <Link 
+              to="/auth" 
+              className="glass-btn glass-btn-primary px-4 py-1.5 text-sm whitespace-nowrap flex-shrink-0"
+            >
+              Login
+            </Link>
           )}
         </div>
       </nav>

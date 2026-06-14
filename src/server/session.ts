@@ -12,3 +12,9 @@ export async function getSession(request: Request, response: Response) {
   const session = await getIronSession(request, response, sessionOptions);
   return session;
 }
+
+declare module 'iron-session' {
+  interface IronSessionData {
+    userId?: string;
+  }
+}

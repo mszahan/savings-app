@@ -9,7 +9,7 @@ import { getRequest, setResponseHeader } from '@tanstack/react-start/server';
 
 export const register = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
-    const { email, password } = data;
+    const { email, password } = data as any;
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = uuidv4();
     await db.insert(users).values({ id: userId, email, password: hashedPassword });
@@ -18,7 +18,7 @@ export const register = createServerFn({ method: 'POST' })
 
 export const login = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
-    const { email, password } = data;
+    const { email, password } = data as any;
     const user = await db.select().from(users).where(eq(users.email, email)).get();
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new Error('Invalid credentials');
@@ -26,7 +26,7 @@ export const login = createServerFn({ method: 'POST' })
     
     const request = getRequest();
     const response = new Response();
-    const session = await getSession(request, response);
+    const session = await getSession(request, response) as any;
     session.userId = user.id;
     await session.save();
     
@@ -42,7 +42,7 @@ export const logout = createServerFn({ method: 'POST' })
   .handler(async () => {
     const request = getRequest();
     const response = new Response();
-    const session = await getSession(request, response);
+    const session = await getSession(request, response) as any;
     session.destroy();
     
     const setCookie = response.headers.get('Set-Cookie');
@@ -57,6 +57,8 @@ export const getMe = createServerFn({ method: 'GET' })
   .handler(async () => {
     const request = getRequest();
     const response = new Response();
-    const session = await getSession(request, response);
-    return { userId: session.userId };
+    const session = await getSession(request, response) as any;
+    if (!session.userId) return { userId: undefined, email: undefined };
+    const user = await db.select().from(users).where(eq(users.id, session.userId)).get();
+    return { userId: session.userId, email: user?.email };
   });

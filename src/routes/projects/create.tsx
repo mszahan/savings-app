@@ -17,24 +17,41 @@ function CreateProject() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await createProject({ data: { name } })
+    await (createProject as any)({ data: { name } })
     navigate({ to: '/' })
   }
 
   return (
-    <main className="max-w-md mx-auto p-6 pt-12">
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-8">New Project</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <label className="block text-sm font-medium text-gray-500 mb-2">Project Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Dream Vacation"
-          className="w-full text-lg border-gray-200 border rounded-xl p-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-6"
-          required
-        />
-        <button type="submit" className="w-full text-lg font-semibold px-6 py-4 bg-gray-900 hover:bg-gray-800 text-white rounded-xl transition">
+    <main className="max-w-md mx-auto p-6 pt-16">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-[var(--sea-ink)] mb-2">
+          New Project
+        </h1>
+        <p className="text-sm text-[var(--sea-ink-soft)]">
+          Create a space to track your savings goals and costs
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="glass-panel p-8 flex flex-col gap-6">
+        <div>
+          <label htmlFor="project-name-input" className="block text-sm font-semibold text-[var(--sea-ink)] mb-1.5">
+            Project Name
+          </label>
+          <input
+            id="project-name-input"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Dream Vacation, Rainy Day Fund"
+            className="w-full glass-input p-3.5 focus-accessible"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full glass-btn glass-btn-primary py-3.5 focus-accessible"
+        >
           Create Project
         </button>
       </form>
