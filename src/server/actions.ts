@@ -4,12 +4,12 @@ import { projects, transactions } from './db/schema';
 import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { getSession } from './session';
-import { getWebRequest, getWebResponse } from '@tanstack/react-start/server';
+import { getRequest } from '@tanstack/react-start/server';
 
 export const getProjects = createServerFn({ method: 'GET' })
   .handler(async () => {
-    const request = getWebRequest();
-    const response = getWebResponse();
+    const request = getRequest();
+    const response = new Response();
     const session = await getSession(request, response);
     if (!session.userId) throw new Error('Unauthorized');
     return await db.select().from(projects).where(eq(projects.userId, session.userId));
@@ -17,8 +17,8 @@ export const getProjects = createServerFn({ method: 'GET' })
 
 export const createProject = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
-    const request = getWebRequest();
-    const response = getWebResponse();
+    const request = getRequest();
+    const response = new Response();
     const session = await getSession(request, response);
     if (!session.userId) throw new Error('Unauthorized');
     const { name } = data;
@@ -29,8 +29,8 @@ export const createProject = createServerFn({ method: 'POST' })
 
 export const getTransactions = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
-    const request = getWebRequest();
-    const response = getWebResponse();
+    const request = getRequest();
+    const response = new Response();
     const session = await getSession(request, response);
     if (!session.userId) throw new Error('Unauthorized');
     const { projectId } = data;
@@ -39,8 +39,8 @@ export const getTransactions = createServerFn({ method: 'GET' })
 
 export const addTransaction = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
-    const request = getWebRequest();
-    const response = getWebResponse();
+    const request = getRequest();
+    const response = new Response();
     const session = await getSession(request, response);
     if (!session.userId) throw new Error('Unauthorized');
     const { projectId, type, amount, description, date } = data;

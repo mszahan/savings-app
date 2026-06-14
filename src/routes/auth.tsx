@@ -19,7 +19,7 @@ function AuthPage() {
       setIsLogin(true)
       return
     }
-    navigate({ to: '/' })
+    window.location.href = '/'
   }
 
   return (
